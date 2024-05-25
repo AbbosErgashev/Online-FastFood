@@ -11,7 +11,18 @@ namespace Online_FastFood.User
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if(!Request.Url.AbsoluteUri.ToString().Contains("Default.aspx"))
+            {
+                form1.Attributes.Add("class", "sub_page");
+            }
+            else
+            {
+                //Load the control
+                Control sliderUserControl = (Control)Page.LoadControl("SliderUserControl.ascx");
 
+                //Add control to the panel
+                pnlSliderUC.Controls.Add(sliderUserControl);
+            }
         }
     }
 }
