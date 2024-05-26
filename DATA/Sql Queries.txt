@@ -1,0 +1,68 @@
+--Category_Crud Query
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE Category_Crud
+	-- Add the parameters for the stored procedure here
+	@Action varchar(10),
+	@CategoryId int = null,
+	@Name varchar(100) = null,
+	@IsActive bit = false,
+	@ImageUrl varchar(max) = null
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	--select
+	if @Action = 'select'
+		begin
+			select * from dbo.Categories order by CreatedDate desc
+		end
+
+	--insert
+	if @Action = 'insert'
+		begin 
+			insert into dbo.Categories(Name, ImageUrl, IsActive, CreatedDate)
+			values (@Name, @ImageUrl, @IsActive, GETDATE())
+		end
+
+	--update
+	if @Action = 'update'
+		begin
+			declare @update_image varchar(20)
+			select @update_image = (case when @ImageUrl is null then 'NO' else 'YES' end)
+			if @update_image = 'NO'
+				begin 
+					update dbo.Categories
+					set Name = @Name, IsActive = @IsActive
+					where CategoryId = @CategoryId
+				end
+			else 
+				begin
+					update dbo.Categories
+					set Name = @Name, ImageUrl = @ImageUrl, IsActive = @IsActive
+					where CategoryId = @CategoryId
+				end
+			end
+
+		--delete
+		if @Action = 'delete'
+			begin
+				delete from dbo.Categories where CategoryId = @CategoryId
+			end
+
+		--getbyid
+		if @Action = 'getbyid'
+			begin
+				select * from dbo.Categories where CategoryId = @CategoryId
+			end
+END
+GO
+
+
