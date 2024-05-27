@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="Category.aspx.cs" Inherits="Online_FastFood.Admin.Category" %>
 
+<%@ Import Namespace="Online_FastFood" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
     <script>
@@ -73,13 +75,65 @@
                                                         OnClick="btnAddOrUpdate_Click" />
                                                     &nbsp;
                                                     <asp:Button ID="btnClear" runat="server" Text="Clear" CssClass="btn btn-primary"
-                                                        CausesValidation="false" />
+                                                        CausesValidation="false" OnClick="btnClear_Click" />
                                                 </div>
                                                 <div>
                                                     <asp:Image ID="imgCategory" runat="server" CssClass="img-thumbnail" />
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="col-sm-6 col-md-8 col-lg-8 mobile-inputs">
+                                            <h4 class="sub-title">Category Lists</h4>
+                                            <div class="card-block table-border-style">
+                                                <div class="table-responsive">
+                                                    <asp:Repeater ID="rCategory" runat="server" OnItemCommand="rCategory_ItemCommand"
+                                                        OnItemDataBound="rCategory_ItemDataBound">
+                                                        <HeaderTemplate>
+                                                            <table class="table data-table-export table-hover nowrap">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="table-plus">Name</th>
+                                                                        <th>Image</th>
+                                                                        <th>IsActive</th>
+                                                                        <th>CreatedDate</th>
+                                                                        <th class="datatable-nosort">Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    </HeaderTemplate>
+                                                                    <ItemTemplate>
+                                                                        <tr>
+                                                                            <td class="table-plus"><%# Eval("Name") %></td>
+                                                                            <td>
+                                                                                <img alt="" width="40" src="<%# Online_FastFood.Connection.Utils.GetImageUrl(Eval("ImageUrl")) %>" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <asp:Label ID="lblIsActive" runat="server" Text='<%# Eval("IsActive") %>'></asp:Label>
+                                                                            </td>
+                                                                            <td><%# Eval("CreatedDate") %></td>
+                                                                            <td>
+                                                                                <asp:LinkButton ID="lnkEdit" Text="Edit" runat="server" CssClass="badge badge-primary"
+                                                                                    CommandArgument='<%# Eval("CategoryId") %>' CommandName="edit">
+                                                                                        <i class="ti-pencil"></i>
+                                                                                </asp:LinkButton>
+                                                                                <asp:LinkButton ID="lnkDelete" Text="Delete" runat="server" CommandName="delete"
+                                                                                    CssClass="badge bg-danger" CommandArgument='<%# Eval("CategoryId") %>'
+                                                                                    OnClientClick="return confirm('Do you want to delete this Category?');">
+                                                                                        <i class="ti-trash"></i>
+                                                                                </asp:LinkButton>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </ItemTemplate>
+                                                                    <FooterTemplate>
+                                                                </tbody>
+                                                            </table>
+                                                        </FooterTemplate>
+                                                    </asp:Repeater>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
