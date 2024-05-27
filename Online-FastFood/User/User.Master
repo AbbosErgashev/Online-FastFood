@@ -40,7 +40,7 @@
     <!-- responsive style -->
     <link href="../TempleteFiles/css/responsive.css" rel="stylesheet" />
 
-    <!-- jQery -->
+    <!-- jQuery -->
     <script src="../TempleteFiles/js/jquery-3.4.1.min.js"></script>
 
         <script>
