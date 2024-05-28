@@ -11,6 +11,7 @@
             }, seconds * 1000);
         };
     </script>
+
     <script>
         function ImagePreview(input) {
             if (input.files && input.files[0]) {
@@ -27,6 +28,7 @@
     </script>
 
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="pcoded-inner-content pt-0">
@@ -44,7 +46,6 @@
                                 </div>
                                 <div class="card-block">
                                     <div class="row">
-
                                         <div class="col-sm-6 col-md-4 col-lg-4">
                                             <h4 class="sub-title">Product</h4>
                                             <div>
@@ -135,7 +136,8 @@
                                                             OnSelecting="SqlDataSource1_Selecting"
                                                             ConnectionString="<%$ ConnectionStrings:FoodieDBConnectionString %>"
                                                             SelectCommand="SELECT [CategoryId], [Name] FROM [Categories]"
-                                                            ProviderName="<%$ ConnectionStrings:FoodieDBConnectionString.ProviderName %>"></asp:SqlDataSource>
+                                                            ProviderName="<%$ ConnectionStrings:FoodieDBConnectionString.ProviderName %>">
+                                                        </asp:SqlDataSource>
                                                     </div>
                                                 </div>
 
@@ -160,7 +162,6 @@
                                             <h4 class="sub-title">Product Lists</h4>
                                             <div class="card-block table-border-style">
                                                 <div class="table-responsive">
-
                                                     <asp:Repeater ID="rProduct" runat="server" OnItemCommand="rProduct_ItemCommand"
                                                         OnItemDataBound="rProduct_ItemDataBound">
                                                         <HeaderTemplate>
@@ -180,6 +181,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                         </HeaderTemplate>
+
                                                         <ItemTemplate>
                                                             <tr>
                                                                 <td class="table-plus"><%# Eval("Name") %></td>
@@ -232,7 +234,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -242,5 +243,4 @@
             </div>
         </div>
     </div>
-
 </asp:Content>
