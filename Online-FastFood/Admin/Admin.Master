@@ -61,36 +61,44 @@
         <div class="theme-loader">
             <div class="ball-scale">
                 <div class='contain'>
-                    <div class="ring">
-                        <div class="frame"></div>
-                    </div>
-                    <div class="ring">
-                        <div class="frame"></div>
-                    </div>
-                    <div class="ring">
 
-                        <div class="frame"></div>
+                    <div class="ring">
+                        <div class="frame" />
+                    </div>
+
+                    <div class="ring">
+                        <div class="frame" />
+                    </div>
+
+                    <div class="ring">
+                        <div class="frame" />
+                    </div>
+
+                    <div class="ring">
+                        <div class="frame" />
+                    </div>
+
+                    <div class="ring">
+                        <div class="frame" />
+                    </div>
+
+                    <div class="ring">
+                        <div class="frame" />
+                    </div>
+
+                    <div class="ring">
+                        <div class="frame" />
+                    </div>
+
+                    <div class="ring">
+                        <div class="frame" />
                     </div>
                     <div class="ring">
-                        <div class="frame"></div>
+                        <div class="frame" />
                     </div>
+
                     <div class="ring">
-                        <div class="frame"></div>
-                    </div>
-                    <div class="ring">
-                        <div class="frame"></div>
-                    </div>
-                    <div class="ring">
-                        <div class="frame"></div>
-                    </div>
-                    <div class="ring">
-                        <div class="frame"></div>
-                    </div>
-                    <div class="ring">
-                        <div class="frame"></div>
-                    </div>
-                    <div class="ring">
-                        <div class="frame"></div>
+                        <div class="frame" />
                     </div>
                 </div>
             </div>
@@ -107,9 +115,6 @@
                             <a class="mobile-menu" id="mobile-collapse" href="#!">
                                 <i class="ti-menu"></i>
                             </a>
-                            <%--<a class="mobile-search morphsearch-search" href="#">
-                                <i class="ti-search"></i>
-                            </a>--%>
                             <a href="index.html">
                                 <img class="img-fluid" src="../assets/images/logo.png" alt="Theme-Logo" />
                             </a>
@@ -131,7 +136,6 @@
                                 </li>
                             </ul>
                             <ul class="nav-right">
-
                                 <li class="user-profile header-notification">
                                     <a href="#!">
                                         <img src="../assets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
@@ -267,7 +271,7 @@
         </div>
     </form>
 
-    <!-- Required Jquery -->
+    <!-- Required JQuery -->
     <%--<script type="text/javascript" src="../assets/js/jquery/jquery.min.js"></script>--%>
     <script type="text/javascript" src="../assets/js/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="../assets/js/popper.js/popper.min.js"></script>
@@ -288,6 +292,7 @@
     <script src="../assets/js/pcoded.min.js"></script>
     <script src="../assets/js/demo-12.js"></script>
     <script src="../assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
     <script>
         var $window = $(window);
         var nav = $('.fixed-button');

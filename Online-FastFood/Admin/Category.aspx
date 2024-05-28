@@ -54,7 +54,8 @@
                                                     <label>Category Name</label>
                                                     <div>
                                                         <asp:TextBox ID="txtName" runat="server" CssClass="form-control"
-                                                            placeholder="Enter Category Name" required></asp:TextBox>
+                                                            placeholder="Enter Category Name" required>
+                                                        </asp:TextBox>
                                                         <asp:HiddenField ID="hdnId" runat="server" Value="0" />
                                                     </div>
                                                 </div>
@@ -66,10 +67,12 @@
                                                             onchange="ImagePreview(this);" />
                                                     </div>
                                                 </div>
+
                                                 <div class="form-check pl-4">
                                                     <asp:CheckBox ID="cbIsActive" runat="server" Text="&nbsp: IsActive"
                                                         CssClass="form-check-input" />
                                                 </div>
+
                                                 <div class="pb-5">
                                                     <asp:Button ID="btnAddOrUpdate" runat="server" Text="Add" CssClass="btn btn-primary"
                                                         OnClick="btnAddOrUpdate_Click" />
@@ -105,13 +108,17 @@
                                                                     <ItemTemplate>
                                                                         <tr>
                                                                             <td class="table-plus"><%# Eval("Name") %></td>
+
                                                                             <td>
                                                                                 <img alt="" width="40" src="<%# Online_FastFood.Connection.Utils.GetImageUrl(Eval("ImageUrl")) %>" />
                                                                             </td>
+
                                                                             <td>
                                                                                 <asp:Label ID="lblIsActive" runat="server" Text='<%# Eval("IsActive") %>'></asp:Label>
                                                                             </td>
+
                                                                             <td><%# Eval("CreatedDate") %></td>
+
                                                                             <td>
                                                                                 <asp:LinkButton ID="lnkEdit" Text="Edit" runat="server" CssClass="badge badge-primary"
                                                                                     CommandArgument='<%# Eval("CategoryId") %>' CommandName="edit">
@@ -123,6 +130,7 @@
                                                                                         <i class="ti-trash"></i>
                                                                                 </asp:LinkButton>
                                                                             </td>
+
                                                                         </tr>
                                                                     </ItemTemplate>
                                                                     <FooterTemplate>
@@ -133,7 +141,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -143,5 +150,4 @@
             </div>
         </div>
     </div>
-
 </asp:Content>
