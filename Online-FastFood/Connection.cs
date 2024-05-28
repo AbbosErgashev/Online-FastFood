@@ -7,7 +7,7 @@ namespace Online_FastFood
     {
         public static string GetConnectionString()
         {
-            return ConfigurationManager.ConnectionStrings["cs"].ConnectionString;
+            return ConfigurationManager.ConnectionStrings["FoodieDBConnectionString"].ConnectionString;
         }
 
         public class Utils

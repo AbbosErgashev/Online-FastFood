@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using static Online_FastFood.Connection;
 
@@ -37,9 +32,9 @@ namespace Online_FastFood.Admin
             con = new SqlConnection(Connection.GetConnectionString());
             cmd = new SqlCommand("Category_Crud", con);
             cmd.Parameters.AddWithValue("@Action", categoryId == 0 ? "Insert" : "Update");
-            cmd.Parameters.AddWithValue("CategoryId", categoryId);
-            cmd.Parameters.AddWithValue("Name", txtName.Text.Trim());
-            cmd.Parameters.AddWithValue("IsActive", cbIsActive.Checked);
+            cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+            cmd.Parameters.AddWithValue("@Name", txtName.Text.Trim());
+            cmd.Parameters.AddWithValue("@IsActive", cbIsActive.Checked);
             if (fuCategoryImage.HasFile)
             {
                 if (Utils.IsValidExtension(fuCategoryImage.FileName))
@@ -145,7 +140,6 @@ namespace Online_FastFood.Admin
             }
             else if (e.CommandName == "delete")
             {
-                //con = new SqlConnection(Connection.GetConnectionString());
                 cmd = new SqlCommand("Category_Crud", con);
                 cmd.Parameters.AddWithValue("@Action", "delete");
                 cmd.Parameters.AddWithValue("@CategoryId", e.CommandArgument);
