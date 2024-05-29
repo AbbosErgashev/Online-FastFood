@@ -19,7 +19,14 @@ namespace Online_FastFood.Admin
             if (!IsPostBack)
             {
                 Session["breadCrum"] = "Category";
-                getCategories();
+                if (Session["admin"] == null)
+                {
+                    Response.Redirect("../User/Login.aspx");
+                }
+                else
+                {
+                    getCategories();
+                }
             }
             lblMsg.Visible = false;
         }
