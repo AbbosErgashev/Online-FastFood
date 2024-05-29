@@ -1,0 +1,67 @@
+create procedure [dbo].[User_Crud]
+	@Action varchar(20),
+	@UserId varchar = null,
+	@Name varchar(50) = null,
+	@Username varchar(50) = null,
+	@Mobile varchar(50) = null,
+	@Email varchar(50) = null,
+	@Address varchar(max) = null,
+	@PostCode varchar(50) = null,
+	@Password varchar(50) = null,
+	@ImageUrl varchar(max) = null
+as 
+begin
+	set nocount on;
+
+	--select for login
+	if @Action = 'select4login'
+	begin
+		select * from dbo.Users where Username = @Username and Password = @Password
+	end
+
+	--select for user profile
+	if @Action = 'select4profile'
+	begin
+		select * from dbo.Users where UserId = @UserId
+	end
+
+	--insert (registration)
+	if @Action = 'insert'
+	begin
+		insert into dbo.Users(Name, Username, Mobile, Email, Address, PostCode, Password, ImageUrl, CreatedDate)
+		values (@Name, @Username, @Mobile, @Email, @Address, @PostCode, @Password, @ImageUrl, GetDate())
+	end
+
+	-- update user profile
+	if @Action = 'update'
+	begin
+		declare @update_image varchar(20)
+		select @update_image = (case when @ImageUrl is null then 'NO' else 'YES' end)
+		if @update_image = 'NO'
+		begin
+			update dbo.Users
+			set name = @Name, @Username = @Username, Mobile = @Mobile, Email = @Email, Address = @Address, PostCode = @PostCode
+			where UserId =@UserId
+		end
+	else
+		begin
+			update dbo.Users
+				set name = @Name, @Username = @Username, Mobile = @Mobile, Email = @Email, Address = @Address, PostCode = @PostCode, ImageUrl = @ImageUrl
+				where UserId =@UserId
+		end
+	end
+
+	--select for admin
+	if @Action = 'select4admin'
+	begin
+		select row_number() over(order by (select 1)) as [SrNo], UserId, Name, Username, Email, CreatedDate
+		from Users
+	end
+
+	-- delete form admin
+	if @Action = 'delete'
+	begin
+		delete from dbo.Users where UserId = @UserId
+	end
+end
+go
