@@ -13,7 +13,7 @@
           <div class="img-box">
             <img src="../TempleteFiles/images/about-img.png" alt="">
           </div>
-        </div>
+        </div>  
         <div class="col-md-6">
           <div class="detail-box">
             <div class="heading_container">
