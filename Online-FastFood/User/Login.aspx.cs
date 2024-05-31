@@ -13,10 +13,7 @@ namespace Online_FastFood.User
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Session["userId"] != null)
-            //{
-            //    Response.Redirect("Default.aspx");
-            //}
+           
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)
