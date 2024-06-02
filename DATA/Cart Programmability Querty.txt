@@ -1,0 +1,61 @@
+CREATE PROCEDURE Cart_Crud
+@Action VARChAR(10),
+@ProductId INT = NULL,
+@Quantity INT = NULL,
+@UserId INT = NULL 
+AS 
+BEGIN
+	SET NOCOUNT ON; 
+	--SELECT 
+	IF @Action ='select' 
+	begin
+		SELECT 
+			c.ProductId, 
+			p.Name, 
+			p.ImageUrl, 
+			p.Price, 
+			c.Quantity AS Qty, 
+			p.Quantity AS PrdQty 
+		FROM dbo.Carts c 
+		INNER JOIN dbo.Products p ON p.ProductId = c.ProductId 
+		WHERE c.UserId =@UserId
+	end
+	
+	--INSERT 
+	IF @Action ='insert' 
+	BEGIN 
+		INSERT INTO dbo.Carts (
+			ProductId, 
+			Quantity, 
+			UserId
+		) 
+		VALUES (
+			@ProductId,
+			@Quantity,
+			@UserId
+		) 
+	END 
+
+	--UPDATE 
+	IF @Action ='update' 
+	BEGIN 
+		UPDATE dbo.Carts 
+		SET Quantity = @Quantity
+		WHERE ProductId =@ProductId AND UserId =@UserId
+	end
+
+	--DELETE 
+	IF @Action ='delete' 
+	BEGIN 
+		DELETE FROM dbo.Carts 
+		WHERE ProductId = @ProductId AND UserId = @UserId
+	END 
+		
+	--GET BY ID ( PRODUCTID & USERID) 
+	IF @Action ='getbyid'
+	BEGIN 
+		SELECT * from dbo.Carts
+		where ProductId = @ProductId and UserId = @UserId
+	END 
+	
+end

@@ -25,6 +25,14 @@ BEGIN
 			select * from dbo.Categories order by CreatedDate desc
 		end
 
+	--activecat
+	if @Action = 'activecat'
+		begin
+			select * from dbo.Categories 
+			where IsActive = 1
+		end
+
+
 	--insert
 	if @Action = 'insert'
 		begin 

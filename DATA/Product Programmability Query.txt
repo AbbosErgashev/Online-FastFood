@@ -21,6 +21,15 @@ BEGIN
 		ORDER BY p.CreatedDate DESC;
 	END
 
+	--activeprod
+	if @Action = 'activeprod'
+	begin
+		select p.*, c.Name as CategoryName
+		from dbo.Products p
+		inner join dbo.Categories c on c.CategoryId = p.CategoryId
+		where p.IsActive = 1
+	end
+
 	-- INSERT
 	IF @Action = 'INSERT'
 	BEGIN
