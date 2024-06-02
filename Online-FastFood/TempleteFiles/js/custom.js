@@ -60,10 +60,38 @@ $(window).on('load', function () {
     })
 });
 
+$(document).ready(function () {
+    /* --------------------
+        Quantity Change
+    --------------------- */
+
+    var proQty = $('.pro-qty');
+    proQty.each(function () {
+        var $this = $(this);
+        $this.prepend('<span class="dec qtybtn">-</span>');
+        $this.append('<span class="inc qtybtn">+</span>');
+    });
+
+    proQty.on('click', '.qtybtn', function () {
+        var $button = $(this);
+        var $input = $button.siblings('input');
+        var oldValue = parseFloat($input.val());
+        var newVal;
+
+        if ($button.hasClass('inc')) {
+            newVal = oldValue >= 10 ? oldValue : oldValue + 1;
+        } else {
+            newVal = oldValue > 1 ? oldValue - 1 : 1;
+        }
+
+        $input.val(newVal);
+    });
+});
+
 // nice select
-$(document).ready(function() {
+$(document).ready(function () {
     $('select').niceSelect();
-  });
+});
 
 /** google_map js **/
 function myMap() {
