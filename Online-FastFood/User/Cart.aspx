@@ -61,7 +61,11 @@
                     </asp:Label>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbDelete" runat="server" Text="Remove" CommandName="remove" CommandArgument='<%# Eval("ProductId") %>' OnClientClick="return confirm('Do you want to remove this item from cart?');">
+                        <asp:LinkButton ID="lbDelete" runat="server" 
+                            Text="Remove" 
+                            CommandName="remove" 
+                            CommandArgument='<%# Eval("ProductId") %>' 
+                            OnClientClick="return confirm('Do you want to remove this item from cart?');">
                             <i class="fa fa-close"></i>
                         </asp:LinkButton>
                     </td>

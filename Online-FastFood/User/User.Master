@@ -20,7 +20,7 @@
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../TempleteFiles/images/favicon.png" type="">
 
-    <title>Feane </title>
+    <title>Fast Food </title>
 
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../TempleteFiles/css/bootstrap.css" />
@@ -69,7 +69,7 @@
                 <div class="container">
                     <nav class="navbar navbar-expand-lg custom_nav-container ">
                         <a class="navbar-brand" href="index.html">
-                            <span>Feane
+                            <span>Fast Food
                             </span>
                         </a>
 
@@ -155,6 +155,9 @@
                                         <g>
                                         </g>
                                     </svg>
+                                    <span class="badge rounded-pill bg-warning mb-4">
+                                        <% Response.Write(Session["cartCount"]); %>
+                                    </span>
                                 </a>
                                 <div class="form-inline">
                                     <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
@@ -188,19 +191,19 @@
                             <h4>Contact Us
                             </h4>
                             <div class="contact_link_box">
-                                <a href="">
+                                <a href="https://www.google.com/maps/place/Toshkent+Viloyati/@41.1008761,69.2988909,8z/data=!4m6!3m5!1s0x38afbcaa73f2ce4d:0x57f19ae913e2f367!8m2!3d41.2213234!4d69.8597406!16zL20vMDZ0N2Zz?entry=ttu">
                                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                    <span>Location
+                                    <span>Tashkent, Uzbekistan
                                     </span>
                                 </a>
-                                <a href="">
+                                <a href="https://t.me/eaxusniddinovich">
                                     <i class="fa fa-phone" aria-hidden="true"></i>
-                                    <span>Call +01 1234567890
+                                    <span>Call +998 93 988 77 73
                                     </span>
                                 </a>
-                                <a href="">
+                                <a href="eaxusniddinovich@gmail.com">
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
-                                    <span>demo@gmail.com
+                                    <span>eaxusniddinovich@gmail.com
                                     </span>
                                 </a>
                             </div>
@@ -208,25 +211,25 @@
                     </div>
                     <div class="col-md-4 footer-col">
                         <div class="footer_detail">
-                            <a href="" class="footer-logo">Feane
+                            <a href="" class="footer-logo">Fast Food
                             </a>
                             <p>
                                 Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
                             </p>
                             <div class="footer_social">
-                                <a href="">
+                                <a href="https://www.facebook.com/eaxusniddinovich">
                                     <i class="fa fa-facebook" aria-hidden="true"></i>
                                 </a>
-                                <a href="">
+                                <a href="https://x.com/ergashev__abbos">
                                     <i class="fa fa-twitter" aria-hidden="true"></i>
                                 </a>
-                                <a href="">
+                                <a href="https://www.linkedin.com/in/eaxusniddinovich">
                                     <i class="fa fa-linkedin" aria-hidden="true"></i>
                                 </a>
-                                <a href="">
+                                <a href="https://www.instagram.com/eaxusniddinovich">
                                     <i class="fa fa-instagram" aria-hidden="true"></i>
                                 </a>
-                                <a href="">
+                                <a href="https://www.pinterest.com/eaxusniddinovich/">
                                     <i class="fa fa-pinterest" aria-hidden="true"></i>
                                 </a>
                             </div>

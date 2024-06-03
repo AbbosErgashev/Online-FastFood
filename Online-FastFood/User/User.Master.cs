@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.UI;
+using static Online_FastFood.Connection;
 
 namespace Online_FastFood.User
 {
@@ -7,7 +8,7 @@ namespace Online_FastFood.User
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!Request.Url.AbsoluteUri.ToString().Contains("Default.aspx"))
+            if (!Request.Url.AbsoluteUri.ToString().Contains("Default.aspx"))
             {
                 form1.Attributes.Add("class", "sub_page");
             }
@@ -20,13 +21,16 @@ namespace Online_FastFood.User
                 pnlSliderUC.Controls.Add(sliderUserControl);
             }
 
-            if (Session["userId"] == null)
+            if (Session["userId"] != null)
             {
-                lbLoginOrLogout.Text = "Login";
+                lbLoginOrLogout.Text = "Logout";
+                Utils utils = new Utils();
+                Session["cartCount"] = utils.cartCount(Convert.ToInt32(Session["userId"])).ToString();
             }
             else
             {
-                lbLoginOrLogout.Text = "Logout";
+                lbLoginOrLogout.Text = "Login";
+                Session["cartCount"] = "0";
             }
         }
 
