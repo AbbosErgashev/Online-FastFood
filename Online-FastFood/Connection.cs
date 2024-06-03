@@ -8,9 +8,8 @@ namespace Online_FastFood
     public class Connection
     {
         public static string GetConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["FoodieDBConnectionString"].ConnectionString;
-        }
+            => ConfigurationManager.ConnectionStrings["FoodieDBConnectionString"].ConnectionString;
+
 
         public class Utils
         {
@@ -31,14 +30,13 @@ namespace Online_FastFood
                         break;
                     }
                 }
-
                 return isValid;
             }
 
             public static string GetImageUrl(Object url)
             {
                 string url1 = "";
-                if(string.IsNullOrEmpty(url.ToString()) || url == DBNull.Value)
+                if (string.IsNullOrEmpty(url.ToString()) || url == DBNull.Value)
                 {
                     url1 = "../Images/No_Image.png";
                 }
@@ -52,7 +50,6 @@ namespace Online_FastFood
 
             public bool updateCartQuantity(int quantity, int productId, int userId)
             {
-
                 bool isUpdated = false;
                 con = new SqlConnection(Connection.GetConnectionString());
                 cmd = new SqlCommand("Cart_Crud", con);
@@ -79,6 +76,19 @@ namespace Online_FastFood
                 }
 
                 return isUpdated;
+            }
+
+            public int cartCount(int userId)
+            {
+                con = new SqlConnection(Connection.GetConnectionString());
+                cmd = new SqlCommand("Cart_Crud", con);
+                cmd.Parameters.AddWithValue("@Action", "select");
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.CommandType = CommandType.StoredProcedure;
+                sda = new SqlDataAdapter(cmd);
+                dt = new DataTable();
+                sda.Fill(dt);
+                return dt.Rows.Count;
             }
         }
     }
