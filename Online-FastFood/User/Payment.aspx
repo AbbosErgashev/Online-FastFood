@@ -53,11 +53,11 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <section class="book_section" 
-        style="background-image: url('../Images/payment-bg.png'); 
+        style="background-image: url('../Images/--Payment4K.png'); 
         width: 100%; 
         height: 100%; 
         background-repeat: no-repeat; 
-        background-size: auto; 
+        background-size: cover; 
         background-attachment: fixed; 
         background-position: left;">
 
@@ -239,7 +239,7 @@
                             <!-- End -->
                         </div>
                         <div class="card-footer">
-                            <b class="badge badge-success badge-pill shadow-sm">Order Total: ₹ <% Response.Write(Session["grandTotalPrice"]); %> </b>
+                            <b class="badge badge-success badge-pill shadow-sm">Order Total: $ <% Response.Write(Session["grandTotalPrice"]); %> </b>
                             <div class="pt-1">
                                 <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" ValidationGroup="card"
                                     HeaderText="Fix the following errors" Font-Names="Segoe Script" />
