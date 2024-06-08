@@ -1,0 +1,71 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE Invoice
+	@Action varchar(10),
+	@PaymentId int = null,
+	@UserId int = null,
+	@OrderDetailsId int = null,
+	@Status varchar(50) = null
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	if @Action = 'invoicebyid'
+	begin
+		select ROW_NUMBER() over(order by (select 1)) as [SrNo], 
+			o.OrderNo, 
+			p.Name, 
+			p.Price, 
+			p.Quantity,
+			(p.Price * o.Quantity) as TotalPrice, o.OrderDate, o.Status from Orders o
+			inner join Products p on p.ProductId = o.ProductId
+			where o.PaymentId = @PaymentId and o.UserId = @UserId
+	end
+
+	--SELECT ORDER hISTORY 
+	IF @Action ='ordhistory' 
+	BEGIN 
+		SELECT DISTINCT o.PaymentId, 
+			p.PaymentMode, 
+			p.CardNo 
+		FROM Orders o 
+		INNER JOIN Payment p on p.PaymentId = o. PaymentId 
+		WhERE o.UserId =@UserId
+		
+	END 
+		
+	--GET ORDER STATUS 
+	IF @Action ='GETSTATUS' 
+	BEGIN 
+		SELECT o.OrderDetailId, 
+			o.OrderNo, 
+			(pr.Price * o.Quantity) as TotalPrice,
+			o.Status,
+			o.OrderDate, 
+			p.PaymentMode, 
+			pr.Name 
+		FROM Orders o 
+		INNER JOIN Payment p ON p.PaymentId = o. PaymentId 
+		INNER JOIN Products pr ON pr.ProductId = o.ProductId
+	END 
+
+	--GET ORDER STATUS BY ID 
+	IF @Action ='STATUSBYID'
+	BEGIN 
+		SELECT OrderDetailId, Status 
+		FROM Orders 
+		WhERE OrderDetailId = @OrderDetailsId
+	END 
+
+	--UPDATE ORDER STATUS
+	IF @Action ='UPDTSTATUS' 
+	BEGIN
+		update dbo.Orders
+		set Status = @Status
+		where OrderDetailId = @OrderDetailsId
+	END
+end
+GO

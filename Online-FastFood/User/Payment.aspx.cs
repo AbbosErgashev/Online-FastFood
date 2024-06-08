@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Collections.Generic;
 using static Online_FastFood.Connection;
 
 namespace Online_FastFood.User
@@ -9,7 +10,6 @@ namespace Online_FastFood.User
     {
         SqlConnection con;
         SqlCommand cmd;
-        SqlDataReader dr, dr1;
         DataTable dt;
         SqlTransaction transaction = null;
         string _name = string.Empty;
@@ -63,17 +63,9 @@ namespace Online_FastFood.User
             }
         }
 
-        void OrderPayment(
-            string name, 
-            string cardNo, 
-            string expiredDate, 
-            string cvv, 
-            string address, 
-            string paymentMode)
+        void OrderPayment(string name, string cardNo, string expiredDate, string cvv, string address, string paymentMode)
         {
-            int paymentId, 
-                producId, 
-                quantity;
+            int paymentId;
             dt = new DataTable();
             dt.Columns.AddRange(new DataColumn[7]
             {
@@ -85,9 +77,11 @@ namespace Online_FastFood.User
                 new DataColumn("PaymentId", typeof(int)),
                 new DataColumn("OrderDate", typeof(DateTime))
             });
+
             con = new SqlConnection(Connection.GetConnectionString());
             con.Open();
             transaction = con.BeginTransaction();
+
             cmd = new SqlCommand("Save_Payment", con, transaction);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Name", name);
@@ -96,8 +90,8 @@ namespace Online_FastFood.User
             cmd.Parameters.AddWithValue("@Cvv", cvv);
             cmd.Parameters.AddWithValue("@Address", address);
             cmd.Parameters.AddWithValue("@PaymentMode", paymentMode);
-            cmd.Parameters.Add("@InsertedId", SqlDbType.Int);
-            cmd.Parameters["@InsertedId"].Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@InsertedId", SqlDbType.Int).Direction = ParameterDirection.Output;
+
             try
             {
                 cmd.ExecuteNonQuery();
@@ -107,24 +101,32 @@ namespace Online_FastFood.User
                 cmd.Parameters.AddWithValue("@Action", "select");
                 cmd.Parameters.AddWithValue("@UserId", Session["userId"]);
                 cmd.CommandType = CommandType.StoredProcedure;
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+
+                List<(int ProductId, int Quantity)> cartItems = new List<(int ProductId, int Quantity)>();
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    producId = (int)dr["ProductId"];
-                    quantity = (int)dr["Quantity"];
-
-                    //Update Product Quantity
-                    UpdateQuantity(producId, quantity, transaction, con);
-
-                    //Delete Cart Item
-                    DeleteCartItem(producId, transaction, con);
-
-                    dt.Rows.Add(Utils.GetUniqueId(), producId, quantity, (int)Session["userId"], "Pending",
-                        paymentId, Convert.ToDateTime(DateTime.Now));
+                    while (dr.Read())
+                    {
+                        cartItems.Add(((int)dr["ProductId"], (int)dr["Quantity"]));
+                    }
                 }
-                dr.Close();
 
-                if(dt.Rows.Count > 0)
+                foreach (var item in cartItems)
+                {
+                    int productId = item.ProductId;
+                    int quantity = item.Quantity;
+
+                    // Update Product Quantity
+                    UpdateQuantity(productId, quantity, transaction, con);
+
+                    // Delete Cart Item
+                    DeleteCartItem(productId, transaction, con);
+
+                    dt.Rows.Add(Utils.GetUniqueId(), productId, quantity, (int)Session["userId"], "Pending",
+                        paymentId, DateTime.Now);
+                }
+
+                if (dt.Rows.Count > 0)
                 {
                     cmd = new SqlCommand("Save_Orders", con, transaction);
                     cmd.Parameters.AddWithValue("@tblOrders", dt);
@@ -136,7 +138,7 @@ namespace Online_FastFood.User
                 lblMsg.Visible = true;
                 lblMsg.Text = "Your item ordered successfully!!!";
                 lblMsg.CssClass = "alert alert-success";
-                Response.AddHeader("REFRESH", "1;URL=Invoice.aspx?id" + paymentId);
+                Response.AddHeader("REFRESH", "1;URL=Invoice.aspx?id=" + paymentId);
             }
             catch
             {
@@ -155,58 +157,49 @@ namespace Online_FastFood.User
             }
         }
 
-        void UpdateQuantity(int _productId, int _quantity, SqlTransaction sqlTransaction, SqlConnection sqlConnection)
+        void UpdateQuantity(int productId, int quantity, SqlTransaction sqlTransaction, SqlConnection sqlConnection)
         {
-            int dbQuantity;
-            cmd = new SqlCommand("Product_Crud", sqlConnection, sqlTransaction);
-            cmd.Parameters.AddWithValue("@Action", "getbyid");
-            cmd.Parameters.AddWithValue("@ProductId", _productId);
-            cmd.CommandType = CommandType.StoredProcedure;
-            try
-            {
-                dr1 = cmd.ExecuteReader();
-                while (dr1.Read())
-                {
-                    dbQuantity = (int)dr1["Quantity"];
+            int dbQuantity = 0; // Initialize dbQuantity to a default value
+            SqlCommand cmdUpdate = new SqlCommand("Product_Crud", sqlConnection, sqlTransaction);
+            cmdUpdate.Parameters.AddWithValue("@Action", "getbyid");
+            cmdUpdate.Parameters.AddWithValue("@ProductId", productId);
+            cmdUpdate.CommandType = CommandType.StoredProcedure;
 
-                    if (dbQuantity > _quantity && dbQuantity > 2)
+            using (SqlDataReader drUpdate = cmdUpdate.ExecuteReader())
+            {
+                if (drUpdate.Read())
+                {
+                    dbQuantity = (int)drUpdate["Quantity"];
+
+                    if (dbQuantity > quantity && dbQuantity > 2)
                     {
-                        dbQuantity = dbQuantity - _quantity;
-                        cmd = new SqlCommand("Product_Crud", sqlConnection, sqlTransaction);
-                        cmd.Parameters.AddWithValue("@Action", "qtyupdate");
-                        cmd.Parameters.AddWithValue("@Quantity", dbQuantity);
-                        cmd.Parameters.AddWithValue("@ProductId", _productId);
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.ExecuteNonQuery();
+                        dbQuantity -= quantity;
                     }
                 }
-                dr1.Close();
             }
-            catch (Exception ex)
+
+            // Check if dbQuantity was assigned a value before proceeding with the update
+            if (dbQuantity > 0)
             {
-                Response.Write("<script>alert('" + ex.Message + "');</script>");
-            }
-            finally
-            {
-                con.Close();
+                cmdUpdate = new SqlCommand("Product_Crud", sqlConnection, sqlTransaction);
+                cmdUpdate.Parameters.AddWithValue("@Action", "qtyupdate");
+                cmdUpdate.Parameters.AddWithValue("@Quantity", dbQuantity);
+                cmdUpdate.Parameters.AddWithValue("@ProductId", productId);
+                cmdUpdate.CommandType = CommandType.StoredProcedure;
+                cmdUpdate.ExecuteNonQuery();
             }
         }
 
-        void DeleteCartItem(int _productId, SqlTransaction sqlTransaction, SqlConnection sqlConnection)
+
+        void DeleteCartItem(int productId, SqlTransaction sqlTransaction, SqlConnection sqlConnection)
         {
-            cmd = new SqlCommand("Cart_Crud", sqlConnection, sqlTransaction);
-            cmd.Parameters.AddWithValue("@Action", "delete");
-            cmd.Parameters.AddWithValue("@ProductId", _productId);
-            cmd.Parameters.AddWithValue("@UserId", Session["userId"]);
-            cmd.CommandType = CommandType.StoredProcedure;
-            try
-            {
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Response.Write("<script>alert('" + ex.Message + "');</script>");
-            }
+            SqlCommand cmdDelete = new SqlCommand("Cart_Crud", sqlConnection, sqlTransaction);
+            cmdDelete.Parameters.AddWithValue("@Action", "delete");
+            cmdDelete.Parameters.AddWithValue("@ProductId", productId);
+            cmdDelete.Parameters.AddWithValue("@UserId", Session["userId"]);
+            cmdDelete.CommandType = CommandType.StoredProcedure;
+
+            cmdDelete.ExecuteNonQuery();
         }
     }
 }
